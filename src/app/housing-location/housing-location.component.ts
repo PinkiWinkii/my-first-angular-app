@@ -1,6 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { HousingLocation } from '../housinglocation';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-housing-location',
@@ -10,7 +11,7 @@ import { HousingLocation } from '../housinglocation';
     <section class="listing">
       <img
         class="listing-photo"
-        [src]="housingLocation.photo"
+        [src]="getHouseImage(housingLocation.photo)"
         alt="Exterior photo of {{ housingLocation.name }}"
         crossorigin
       />
@@ -23,4 +24,9 @@ import { HousingLocation } from '../housinglocation';
 })
 export class HousingLocationComponent {
   @Input() housingLocation!: HousingLocation;
+
+  getHouseImage(photoPath: string): string {
+    const baseUrl = environment.imgUrl; // Usa la URL base de environment.ts
+    return `${baseUrl}/${photoPath}`;
+  }
 }

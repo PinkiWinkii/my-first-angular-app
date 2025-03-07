@@ -8,7 +8,7 @@ import {
   isPlatformServer,
   parseCookieValue,
   setRootDomAdapter
-} from "./chunk-6OORFGZS.js";
+} from "./chunk-X6E54G6H.js";
 import {
   APP_BOOTSTRAP_LISTENER,
   APP_ID,
@@ -26,13 +26,14 @@ import {
   Injector,
   NgModule,
   NgZone,
-  Observable,
   Optional,
   PLATFORM_ID,
   PLATFORM_INITIALIZER,
   PendingTasksInternal,
   RendererFactory2,
   RendererStyleFlags2,
+  ResourceImpl,
+  ResourceStatus,
   RuntimeError,
   SecurityContext,
   TESTABILITY,
@@ -45,39 +46,31 @@ import {
   ViewEncapsulation,
   XSS_SECURITY_URL,
   ZONELESS_ENABLED,
-  __async,
-  __objRest,
-  __spreadProps,
-  __spreadValues,
   _global,
   _sanitizeHtml,
   _sanitizeUrl,
   allowSanitizationBypassAndThrow,
+  assertInInjectionContext,
   bypassSanitizationTrustHtml,
   bypassSanitizationTrustResourceUrl,
   bypassSanitizationTrustScript,
   bypassSanitizationTrustStyle,
   bypassSanitizationTrustUrl,
-  concatMap,
+  computed,
   createPlatformFactory,
-  filter,
-  finalize,
   formatRuntimeError,
   forwardRef,
-  from,
   inject,
   internalCreateApplication,
+  linkedSignal,
   makeEnvironmentProviders,
   makeStateKey,
-  map,
-  of,
   performanceMarkFeature,
   platformCore,
   runInInjectionContext,
   setClassMetadata,
   setDocument,
-  switchMap,
-  tap,
+  signal,
   truncateMiddle,
   unwrapSafeValue,
   withDomHydration,
@@ -88,7 +81,24 @@ import {
   ɵɵdefineInjector,
   ɵɵdefineNgModule,
   ɵɵinject
-} from "./chunk-KQVTM4CV.js";
+} from "./chunk-K7ZWGTYN.js";
+import {
+  Observable,
+  concatMap,
+  filter,
+  finalize,
+  from,
+  map,
+  of,
+  switchMap,
+  tap
+} from "./chunk-P6U2JBMQ.js";
+import {
+  __async,
+  __objRest,
+  __spreadProps,
+  __spreadValues
+} from "./chunk-4ULMLRGT.js";
 
 // node_modules/@angular/common/fesm2022/http.mjs
 var HttpHandler = class {
@@ -1284,13 +1294,13 @@ var FetchBackend = class _FetchBackend {
       return () => aborter.abort();
     });
   }
-  doRequest(request, signal, observer) {
+  doRequest(request, signal2, observer) {
     return __async(this, null, function* () {
       const init = this.createRequestInit(request);
       let response;
       try {
         const fetchPromise = this.ngZone.runOutsideAngular(() => this.fetchImpl(request.urlWithParams, __spreadValues({
-          signal
+          signal: signal2
         }, init)));
         silenceSuperfluousUnhandledPromiseRejection(fetchPromise);
         observer.next({
@@ -2227,6 +2237,117 @@ var HttpClientJsonpModule = class _HttpClientJsonpModule {
     }]
   }], null, null);
 })();
+var httpResource = (() => {
+  const jsonFn = makeHttpResourceFn("json");
+  jsonFn.arrayBuffer = makeHttpResourceFn("arraybuffer");
+  jsonFn.blob = makeHttpResourceFn("blob");
+  jsonFn.text = makeHttpResourceFn("text");
+  return jsonFn;
+})();
+function makeHttpResourceFn(responseType) {
+  return function httpResourceRef(request, options) {
+    options?.injector || assertInInjectionContext(httpResource);
+    const injector = options?.injector ?? inject(Injector);
+    return new HttpResourceImpl(injector, () => normalizeRequest(request, responseType), options?.defaultValue, options?.parse);
+  };
+}
+function normalizeRequest(request, responseType) {
+  let unwrappedRequest = typeof request === "function" ? request() : request;
+  if (unwrappedRequest === void 0) {
+    return void 0;
+  } else if (typeof unwrappedRequest === "string") {
+    unwrappedRequest = {
+      url: unwrappedRequest
+    };
+  }
+  const headers = unwrappedRequest.headers instanceof HttpHeaders ? unwrappedRequest.headers : new HttpHeaders(unwrappedRequest.headers);
+  const params = unwrappedRequest.params instanceof HttpParams ? unwrappedRequest.params : new HttpParams({
+    fromObject: unwrappedRequest.params
+  });
+  return new HttpRequest(unwrappedRequest.method ?? "GET", unwrappedRequest.url, unwrappedRequest.body ?? null, {
+    headers,
+    params,
+    reportProgress: unwrappedRequest.reportProgress,
+    withCredentials: unwrappedRequest.withCredentials,
+    responseType
+  });
+}
+var HttpResourceImpl = class extends ResourceImpl {
+  client;
+  _headers = linkedSignal({
+    source: this.extRequest,
+    computation: () => void 0
+  });
+  _progress = linkedSignal({
+    source: this.extRequest,
+    computation: () => void 0
+  });
+  _statusCode = linkedSignal({
+    source: this.extRequest,
+    computation: () => void 0
+  });
+  headers = computed(() => this.status() === ResourceStatus.Resolved || this.status() === ResourceStatus.Error ? this._headers() : void 0);
+  progress = this._progress.asReadonly();
+  statusCode = this._statusCode.asReadonly();
+  constructor(injector, request, defaultValue, parse) {
+    super(request, ({
+      request: request2,
+      abortSignal
+    }) => {
+      let sub;
+      const onAbort = () => sub.unsubscribe();
+      abortSignal.addEventListener("abort", onAbort);
+      const stream = signal({
+        value: void 0
+      });
+      let resolve;
+      const promise = new Promise((r) => resolve = r);
+      const send = (value) => {
+        stream.set(value);
+        resolve?.(stream);
+        resolve = void 0;
+      };
+      sub = this.client.request(request2).subscribe({
+        next: (event) => {
+          switch (event.type) {
+            case HttpEventType.Response:
+              this._headers.set(event.headers);
+              this._statusCode.set(event.status);
+              try {
+                send({
+                  value: parse ? parse(event.body) : event.body
+                });
+              } catch (error) {
+                send({
+                  error
+                });
+              }
+              break;
+            case HttpEventType.DownloadProgress:
+              this._progress.set(event);
+              break;
+          }
+        },
+        error: (error) => send({
+          error
+        }),
+        complete: () => {
+          if (resolve) {
+            send({
+              error: new Error("Resource completed before producing a value")
+            });
+          }
+          abortSignal.removeEventListener("abort", onAbort);
+        }
+      });
+      return promise;
+    }, defaultValue, void 0, injector);
+    this.client = injector.get(HttpClient);
+  }
+  hasValue() {
+    return super.hasValue();
+  }
+};
 var HTTP_TRANSFER_CACHE_ORIGIN_MAP = new InjectionToken(ngDevMode ? "HTTP_TRANSFER_CACHE_ORIGIN_MAP" : "");
 var BODY = "b";
 var HEADERS = "h";
@@ -2351,8 +2472,7 @@ function withHttpTransferCache(cacheOptions) {
   }, {
     provide: HTTP_ROOT_INTERCEPTOR_FNS,
     useValue: transferCacheInterceptorFn,
-    multi: true,
-    deps: [TransferState, CACHE_OPTIONS]
+    multi: true
   }, {
     provide: APP_BOOTSTRAP_LISTENER,
     multi: true,
@@ -4280,7 +4400,7 @@ function provideClientHydration(...features) {
   }
   return makeEnvironmentProviders([typeof ngDevMode !== "undefined" && ngDevMode ? provideZoneJsCompatibilityDetector() : [], withDomHydration(), featuresKind.has(HydrationFeatureKind.NoHttpTransferCache) || hasHttpTransferCacheOptions ? [] : withHttpTransferCache({}), providers]);
 }
-var VERSION = new Version("19.1.6");
+var VERSION = new Version("19.2.1");
 
 export {
   BrowserDomAdapter,
@@ -4325,16 +4445,16 @@ export {
 
 @angular/common/fesm2022/http.mjs:
   (**
-   * @license Angular v19.1.6
-   * (c) 2010-2024 Google LLC. https://angular.io/
+   * @license Angular v19.2.1
+   * (c) 2010-2025 Google LLC. https://angular.io/
    * License: MIT
    *)
 
 @angular/platform-browser/fesm2022/platform-browser.mjs:
   (**
-   * @license Angular v19.1.6
-   * (c) 2010-2024 Google LLC. https://angular.io/
+   * @license Angular v19.2.1
+   * (c) 2010-2025 Google LLC. https://angular.io/
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-CR3RVSSB.js.map
+//# sourceMappingURL=chunk-HBITL2YY.js.map

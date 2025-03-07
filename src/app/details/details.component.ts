@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {HousingService} from '../housing.service';
 import {HousingLocation} from '../housinglocation';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-details',
   imports: [CommonModule, ReactiveFormsModule],
@@ -11,7 +12,7 @@ import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
    <article>
       <img
         class="listing-photo"
-        [src]="housingLocation?.photo"
+        [src]="getHouseImage(housingLocation!.photo)"
         alt="Exterior photo of {{ housingLocation?.name }}"
         crossorigin
       />
@@ -52,8 +53,9 @@ export class DetailsComponent {
     lastName: new FormControl(''),
     email: new FormControl(''),
   });
+  readonly baseUrl = 'https://angular.dev/assets/images/tutorials/common';
   constructor() {
-    const housingLocationId = parseInt(this.route.snapshot.params['id'], 10);
+    const housingLocationId = this.route.snapshot.params['id'];
     this.housingLocation = this.housingService.getHousingLocationById(housingLocationId);
   }
   submitApplication() {
@@ -62,5 +64,10 @@ export class DetailsComponent {
       this.applyForm.value.lastName ?? '',
       this.applyForm.value.email ?? '',
     );
+  }
+
+  getHouseImage(photoPath: string): string {
+    const baseUrl = environment.imgUrl; // Usa la URL base de environment.ts
+    return `${baseUrl}/${photoPath}`;
   }
 }

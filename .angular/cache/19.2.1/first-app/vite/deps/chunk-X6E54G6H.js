@@ -27,13 +27,9 @@ import {
   Renderer2,
   RendererStyleFlags2,
   RuntimeError,
-  Subject,
   TemplateRef,
   Version,
   ViewContainerRef,
-  __async,
-  __spreadProps,
-  __spreadValues,
   booleanAttribute,
   createNgModule,
   findLocaleData,
@@ -50,7 +46,6 @@ import {
   stringify,
   untracked,
   unwrapSafeValue,
-  ɵɵInputTransformsFeature,
   ɵɵNgOnChangesFeature,
   ɵɵdefineDirective,
   ɵɵdefineInjectable,
@@ -61,7 +56,15 @@ import {
   ɵɵinject,
   ɵɵinjectAttribute,
   ɵɵstyleProp
-} from "./chunk-KQVTM4CV.js";
+} from "./chunk-K7ZWGTYN.js";
+import {
+  Subject
+} from "./chunk-P6U2JBMQ.js";
+import {
+  __async,
+  __spreadProps,
+  __spreadValues
+} from "./chunk-4ULMLRGT.js";
 
 // node_modules/@angular/common/fesm2022/common.mjs
 var _DOM = null;
@@ -207,13 +210,11 @@ function joinWithSlash(start, end) {
   return end.startsWith("/") ? start + end : `${start}/${end}`;
 }
 function stripTrailingSlash(url) {
-  const match = url.match(/#|\?|$/);
-  const pathEndIdx = match && match.index || url.length;
-  const droppedSlashIdx = pathEndIdx - (url[pathEndIdx - 1] === "/" ? 1 : 0);
-  return url.slice(0, droppedSlashIdx) + url.slice(pathEndIdx);
+  const pathEndIdx = url.search(/#|\?|$/);
+  return url[pathEndIdx - 1] === "/" ? url.slice(0, pathEndIdx - 1) + url.slice(pathEndIdx) : url;
 }
 function normalizeQueryParams(params) {
-  return params && params[0] !== "?" ? "?" + params : params;
+  return params && params[0] !== "?" ? `?${params}` : params;
 }
 var LocationStrategy = class _LocationStrategy {
   historyGo(relativePosition) {
@@ -346,17 +347,11 @@ var HashLocationStrategy = class _HashLocationStrategy extends LocationStrategy 
     return url.length > 0 ? "#" + url : url;
   }
   pushState(state, title, path, queryParams) {
-    let url = this.prepareExternalUrl(path + normalizeQueryParams(queryParams));
-    if (url.length == 0) {
-      url = this._platformLocation.pathname;
-    }
+    const url = this.prepareExternalUrl(path + normalizeQueryParams(queryParams)) || this._platformLocation.pathname;
     this._platformLocation.pushState(state, title, url);
   }
   replaceState(state, title, path, queryParams) {
-    let url = this.prepareExternalUrl(path + normalizeQueryParams(queryParams));
-    if (url.length == 0) {
-      url = this._platformLocation.pathname;
-    }
+    const url = this.prepareExternalUrl(path + normalizeQueryParams(queryParams)) || this._platformLocation.pathname;
     this._platformLocation.replaceState(state, title, url);
   }
   forward() {
@@ -3639,13 +3634,11 @@ function strToNumber(value) {
 var SlicePipe = class _SlicePipe {
   transform(value, start, end) {
     if (value == null) return null;
-    if (!this.supports(value)) {
+    const supports = typeof value === "string" || Array.isArray(value);
+    if (!supports) {
       throw invalidPipeArgumentError(_SlicePipe, value);
     }
     return value.slice(start, end);
-  }
-  supports(obj) {
-    return typeof obj === "string" || Array.isArray(obj);
   }
   static ɵfac = function SlicePipe_Factory(__ngFactoryType__) {
     return new (__ngFactoryType__ || _SlicePipe)();
@@ -3694,7 +3687,7 @@ function isPlatformBrowser(platformId) {
 function isPlatformServer(platformId) {
   return platformId === PLATFORM_SERVER_ID;
 }
-var VERSION = new Version("19.1.6");
+var VERSION = new Version("19.2.1");
 var ViewportScroller = class _ViewportScroller {
   // De-sugared tree-shakable injection
   // See #23917
@@ -4664,7 +4657,7 @@ var NgOptimizedImage = class _NgOptimizedImage {
       src: "src",
       srcset: "srcset"
     },
-    features: [ɵɵInputTransformsFeature, ɵɵNgOnChangesFeature]
+    features: [ɵɵNgOnChangesFeature]
   });
 };
 (() => {
@@ -5132,9 +5125,9 @@ export {
 
 @angular/common/fesm2022/common.mjs:
   (**
-   * @license Angular v19.1.6
-   * (c) 2010-2024 Google LLC. https://angular.io/
+   * @license Angular v19.2.1
+   * (c) 2010-2025 Google LLC. https://angular.io/
    * License: MIT
    *)
 */
-//# sourceMappingURL=chunk-6OORFGZS.js.map
+//# sourceMappingURL=chunk-X6E54G6H.js.map
