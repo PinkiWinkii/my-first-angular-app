@@ -1,8 +1,8 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { HousingLocationComponent } from '../housing-location/housing-location.component';
-import { HousingLocation } from '../housinglocation';
+import { HousingLocation } from '../../housinglocation';
 import { CommonModule } from '@angular/common';
-import { HousingService } from '../housing.service';
+import { HousingService } from '../../housing.service';
 import { Subscription } from 'rxjs';
 
 @Component({

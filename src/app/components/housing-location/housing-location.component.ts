@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { HousingLocation } from '../housinglocation';
+import { HousingLocation } from '../../housinglocation';
 import { environment } from 'src/environments/environment';
 
 @Component({

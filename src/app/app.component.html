@@ -1,0 +1,35 @@
+<main *ngIf="isLoading; else content">
+    <p>Cargando datos...</p>
+  </main>
+  <ng-template #content>
+    <div *ngIf="isAuthenticated$; else appContent">
+      <h2>Login</h2>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        <div>
+          <label for="email">Email:</label>
+          <input id="email" formControlName="email" type="email" required />
+        </div>
+        <div>
+          <label for="password">Password:</label>
+          <input id="password" formControlName="password" type="password" required />
+        </div>
+        <button type="submit" [disabled]="loginForm.invalid">Login</button>
+      </form>
+    </div>
+
+    <ng-template #appContent>
+      <a [routerLink]="['/']">
+        <header class="brand-name">
+          <img class="brand-logo" src="/assets/logo.svg" alt="logo" aria-hidden="true" />
+        </header>
+      </a>
+      <section class="content">
+        <router-outlet></router-outlet>
+      </section>
+
+      <h1>Counter: {{ counter$ | async }}</h1>
+      <button (click)="increment()">Increment</button>
+      <button (click)="decrement()">Decrement</button>
+      <button (click)="logoutUser()">Logout</button>
+    </ng-template>
+  </ng-template>

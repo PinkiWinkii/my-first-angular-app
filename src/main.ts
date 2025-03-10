@@ -1,12 +1,13 @@
-/*
- *  Protractor support is deprecated in Angular.
- *  Protractor is used in this example for compatibility with Angular documentation tools.
- */
-import {bootstrapApplication, provideProtractorTestingSupport} from '@angular/platform-browser';
-import {AppComponent} from './app/app.component';
-import {provideRouter} from '@angular/router';
-import routeConfig from './app/routes';
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideRouter } from '@angular/router';
+import { AppComponent } from './app/app.component'; // Tu componente standalone
+import { provideStore } from '@ngrx/store'; // Usar provideStore en lugar de StoreModule
+import routeConfig from './app/routes'; // Tu configuración de rutas
+import { counterReducer } from './app/store/counter.reducer'; // El reducer de tu store
 
 bootstrapApplication(AppComponent, {
-  providers: [provideProtractorTestingSupport(), provideRouter(routeConfig)],
+  providers: [
+    provideRouter(routeConfig), // Configuración de rutas
+    provideStore({ counter: counterReducer }) // Proporcionar el store
+  ]
 }).catch((err) => console.error(err));
