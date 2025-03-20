@@ -1,32 +1,38 @@
 <h2>Create New House</h2>
 <form (ngSubmit)="onSubmit()">
-  <div>
+  <div class="form-group">
     <label for="name">Name:</label>
-    <input id="name" [(ngModel)]="housingLocation.name" name="name" required />
+    <input id="name" type="text" [(ngModel)]="housingLocation.name" name="name" required />
   </div>
-  <div>
+  <div class="form-group">
     <label for="city">City:</label>
-    <input id="city" [(ngModel)]="housingLocation.city" name="city" required />
+    <input id="city" type="text" [(ngModel)]="housingLocation.city" name="city" required />
   </div>
-  <div>
+  <div class="form-group">
     <label for="state">State:</label>
-    <input id="state" [(ngModel)]="housingLocation.state" name="state" required />
+    <input id="state" type="text" [(ngModel)]="housingLocation.state" name="state" required />
   </div>
-  <div>
+  <div class="form-group">
     <label for="photo">Photo URL:</label>
-    <input id="photo" [(ngModel)]="housingLocation.photo" name="photo" required />
+    <input id="photo" type="text" [(ngModel)]="housingLocation.photo" name="photo" required />
   </div>
-  <div>
+  <div class="form-group">
     <label for="availableUnits">Available Units:</label>
-    <input id="availableUnits" type="number" [(ngModel)]="housingLocation.availableUnits" name="availableUnits" required />
+    <input
+      id="availableUnits"
+      type="number"
+      [(ngModel)]="housingLocation.availableUnits"
+      name="availableUnits"
+      required
+    />
   </div>
-  <div>
-    <label for="wifi">Wifi:</label>
+  <div class="checkbox-group">
     <input id="wifi" type="checkbox" [(ngModel)]="housingLocation.wifi" name="wifi" />
+    <label for="wifi">Wifi</label>
   </div>
-  <div>
-    <label for="laundry">Laundry:</label>
+  <div class="checkbox-group">
     <input id="laundry" type="checkbox" [(ngModel)]="housingLocation.laundry" name="laundry" />
+    <label for="laundry">Laundry</label>
   </div>
   <button type="submit">Create</button>
 </form>

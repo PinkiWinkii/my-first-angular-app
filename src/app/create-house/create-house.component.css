@@ -1,0 +1,104 @@
+/* Estilos generales para el formulario */
+form {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Arial', sans-serif;
+}
+
+/* Estilos para los títulos */
+h2 {
+  text-align: center;
+  color: #333;
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+/* Estilos para los grupos de campos */
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+/* Estilos para las etiquetas */
+label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #555;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Estilos para los inputs y textareas */
+input[type="text"],
+input[type="number"],
+input[type="url"],
+input[type="checkbox"] {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  color: #333;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus,
+input[type="url"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 8px rgba(0, 123, 255, 0.25);
+  outline: none;
+}
+
+/* Estilos específicos para los checkboxes */
+input[type="checkbox"] {
+  width: auto;
+  margin-right: 0.5rem;
+}
+
+/* Estilos para el botón de enviar */
+button[type="submit"] {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #0056b3;
+  transform: translateY(-2px);
+}
+
+button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Estilos para los mensajes de error (opcional) */
+.error-message {
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+/* Estilos para los checkboxes y sus etiquetas */
+.checkbox-group {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.checkbox-group label {
+  margin-bottom: 0;
+  color: #555;
+  font-size: 1rem;
+}
