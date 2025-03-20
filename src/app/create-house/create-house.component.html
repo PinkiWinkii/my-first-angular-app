@@ -1,0 +1,32 @@
+<h2>Create New House</h2>
+<form (ngSubmit)="onSubmit()">
+  <div>
+    <label for="name">Name:</label>
+    <input id="name" [(ngModel)]="housingLocation.name" name="name" required />
+  </div>
+  <div>
+    <label for="city">City:</label>
+    <input id="city" [(ngModel)]="housingLocation.city" name="city" required />
+  </div>
+  <div>
+    <label for="state">State:</label>
+    <input id="state" [(ngModel)]="housingLocation.state" name="state" required />
+  </div>
+  <div>
+    <label for="photo">Photo URL:</label>
+    <input id="photo" [(ngModel)]="housingLocation.photo" name="photo" required />
+  </div>
+  <div>
+    <label for="availableUnits">Available Units:</label>
+    <input id="availableUnits" type="number" [(ngModel)]="housingLocation.availableUnits" name="availableUnits" required />
+  </div>
+  <div>
+    <label for="wifi">Wifi:</label>
+    <input id="wifi" type="checkbox" [(ngModel)]="housingLocation.wifi" name="wifi" />
+  </div>
+  <div>
+    <label for="laundry">Laundry:</label>
+    <input id="laundry" type="checkbox" [(ngModel)]="housingLocation.laundry" name="laundry" />
+  </div>
+  <button type="submit">Create</button>
+</form>

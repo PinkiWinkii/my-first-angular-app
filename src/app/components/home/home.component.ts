@@ -4,6 +4,7 @@ import { HousingLocation } from '../../housinglocation';
 import { CommonModule } from '@angular/common';
 import { HousingService } from '../../housing.service';
 import { Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -13,6 +14,7 @@ import { Subscription } from 'rxjs';
       <form>
         <input type="text" placeholder="Filter by city" #filter/>
         <button class="primary" type="button" (click)="filterResults(filter.value)">Search</button>
+        <button class="primary" type="button" (click)="navigateToCreateHouse()">Create House</button>
       </form>
     </section>
     <section class="results">
@@ -29,6 +31,7 @@ export class HomeComponent implements OnInit {
   filteredLocationList: HousingLocation[] = [];
   housingService = inject(HousingService);
   private subscription!: Subscription;
+  private router = inject(Router);
 
   ngOnInit() {
     // Suscribirse para recibir datos cuando estén listos
@@ -55,5 +58,9 @@ export class HomeComponent implements OnInit {
     this.filteredLocationList = this.housingLocationList.filter((housingLocation) =>
       housingLocation?.city.toLowerCase().includes(text.toLowerCase())
     );
+  }
+
+  navigateToCreateHouse() {
+    this.router.navigate(['/create-house']); // 🔹 Navega al componente CreateHouse
   }
 }

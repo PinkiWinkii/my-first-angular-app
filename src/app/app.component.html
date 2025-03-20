@@ -2,7 +2,7 @@
     <p>Cargando datos...</p>
   </main>
   <ng-template #content>
-    <div *ngIf="isAuthenticated$; else appContent">
+    <div *ngIf="!isAuthenticated$; else appContent">
       <h2>Login</h2>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         <div>

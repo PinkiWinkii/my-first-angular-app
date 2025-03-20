@@ -1,55 +1,55 @@
 {
-  "hash": "b7c42662",
+  "hash": "c3c9e96f",
   "configHash": "ed602db8",
-  "lockfileHash": "c0256199",
-  "browserHash": "a7f804cd",
+  "lockfileHash": "45d67453",
+  "browserHash": "73359c77",
   "optimized": {
     "@angular/common": {
       "src": "../../../../../../node_modules/@angular/common/fesm2022/common.mjs",
       "file": "@angular_common.js",
-      "fileHash": "78374e99",
+      "fileHash": "555cbffd",
       "needsInterop": false
     },
     "@angular/core": {
       "src": "../../../../../../node_modules/@angular/core/fesm2022/core.mjs",
       "file": "@angular_core.js",
-      "fileHash": "1a4131df",
+      "fileHash": "5cfa2264",
       "needsInterop": false
     },
     "@angular/forms": {
       "src": "../../../../../../node_modules/@angular/forms/fesm2022/forms.mjs",
       "file": "@angular_forms.js",
-      "fileHash": "c5514a54",
+      "fileHash": "147d8465",
       "needsInterop": false
     },
     "@angular/platform-browser": {
       "src": "../../../../../../node_modules/@angular/platform-browser/fesm2022/platform-browser.mjs",
       "file": "@angular_platform-browser.js",
-      "fileHash": "e2ee6390",
+      "fileHash": "1f3ebf28",
       "needsInterop": false
     },
     "@angular/router": {
       "src": "../../../../../../node_modules/@angular/router/fesm2022/router.mjs",
       "file": "@angular_router.js",
-      "fileHash": "ceb254a5",
-      "needsInterop": false
-    },
-    "axios": {
-      "src": "../../../../../../node_modules/axios/index.js",
-      "file": "axios.js",
-      "fileHash": "7f39f4da",
-      "needsInterop": false
-    },
-    "rxjs": {
-      "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
-      "file": "rxjs.js",
-      "fileHash": "df17d1e8",
+      "fileHash": "d414f5f8",
       "needsInterop": false
     },
     "@ngrx/store": {
       "src": "../../../../../../node_modules/@ngrx/store/fesm2022/ngrx-store.mjs",
       "file": "@ngrx_store.js",
-      "fileHash": "65e0baeb",
+      "fileHash": "de702965",
+      "needsInterop": false
+    },
+    "axios": {
+      "src": "../../../../../../node_modules/axios/index.js",
+      "file": "axios.js",
+      "fileHash": "0afce6d2",
+      "needsInterop": false
+    },
+    "rxjs": {
+      "src": "../../../../../../node_modules/rxjs/dist/esm5/index.js",
+      "file": "rxjs.js",
+      "fileHash": "eab5e7e2",
       "needsInterop": false
     }
   },

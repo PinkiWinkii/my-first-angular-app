@@ -22,13 +22,25 @@ export class AppComponent implements OnInit {
   counter$: Observable<number>;
   loginForm: FormGroup;
   isAuthenticated$: Observable<boolean>; // Observable que indica si el usuario está logueado
+  user$: Observable<User | null>;
 
-  constructor(private store: Store<{ counter: { count: number }, user: { name: string } | null }>, private fb: FormBuilder) {
+  constructor(private store: Store<{ counter: { count: number }, user: User | null }>, private fb: FormBuilder) {
     this.counter$ = store.select(state => state.counter?.count);
-    this.isAuthenticated$ = store.select(state => state.user !== null); // Comprobar si hay un usuario
+    this.user$ = store.select(state => state.user);
+    this.isAuthenticated$ = store.select(state => state.user !== null || state.user !== undefined);
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
+    });
+
+    this.isAuthenticated$.subscribe(isAuthenticated => {
+      this.user$.subscribe(user => {
+        if (isAuthenticated) {
+          console.log('Usuario autenticado:', user);  // Log del usuario autenticado
+        } else {
+          console.log('Usuario no autenticado');
+        }
+      });
     });
   }
 
@@ -60,6 +72,10 @@ export class AppComponent implements OnInit {
   }
 
   async ngOnInit() {
+    // Verificar el estado de `user` al inicio
+    this.store.select('user').subscribe(userState => {
+      console.log('User state on init:', userState);
+    });
     await this.housingService.getHouses();
     this.isLoading = false;
   }

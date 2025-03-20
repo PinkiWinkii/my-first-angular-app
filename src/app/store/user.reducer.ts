@@ -17,6 +17,12 @@ export const initialUserState: UserState = {
 
 export const userReducer = createReducer(
   initialUserState,
-  on(setUser, (state, {user}) => ({...state, user})),
-  on(clearUser, (state) => ({...state, user: null})),
+  on(setUser, (state, {user}) => {
+    console.log('setUser action dispatched, user:', user);  // Aquí puedes ver qué usuario se está asignando
+    return {...state, user};
+  }),
+  on(clearUser, (state) => {
+    console.log('clearUser action dispatched');
+    return {...state, user: null};
+  }),
 );
